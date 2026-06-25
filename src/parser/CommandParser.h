@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "Command.h"
+#include "../common/Command.h"
 
 class CommandParser {
 public:

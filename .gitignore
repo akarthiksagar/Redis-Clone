@@ -1,1 +1,27 @@
-.vscode
+# Object files
+*.o
+*.obj
+
+# Executables
+*.out
+*.exe
+
+# Libraries
+*.a
+*.so
+*.dll
+
+# Build directories
+build/
+bin/
+
+# VS Code
+.vscode/
+
+# CMake
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+redis_clone

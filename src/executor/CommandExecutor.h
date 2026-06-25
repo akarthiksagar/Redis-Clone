@@ -2,8 +2,8 @@
 
 #include <string>
 
-#include "Command.h"
-#include "DataStore.h"
+#include "../common/Command.h"
+#include "../datastore/DataStore.h"
 
 class CommandExecutor {
 private:

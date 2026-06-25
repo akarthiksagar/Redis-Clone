@@ -2,6 +2,8 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <iostream>
+#include <thread>
 
 RedisServer::RedisServer(int port): port(port),server_fd(-1),executor(datastore){
 
@@ -46,42 +48,58 @@ void RedisServer::acceptClients(){
                 nullptr,
                 nullptr
             );
-
-        handleClient(client_fd);
+        std::thread(&RedisServer::handleClient,this,client_fd).detach();
     }
 }
 void RedisServer::handleClient(int client_fd){
-    char buffer[1024];
+    std::cout<<"Connected to client with client_fd: "<<client_fd<<'\n';
+    while(true){
+        char buffer[1024];
+        int bytes =
+            recv(
+                client_fd,
+                buffer,
+                sizeof(buffer)-1,
+                0
+            );
 
-    int bytes =
-        recv(
+        if(bytes <= 0)
+            break;
+
+        buffer[bytes] = '\0';
+
+        std::string input(buffer);
+        while(!input.empty() &&(input.back() == '\n' || input.back() == '\r')) {
+            input.pop_back();
+        }
+        if(input=="EXIT"||input=="exit") break;
+        
+        std::cout << "Received: " << input << '\n';
+
+        Command cmd =
+            parser.parse(input);
+
+        std::cout << "Parsed\n";
+
+        std::string response =
+            executor.execute(cmd);
+
+        std::cout << "Executed\n";
+
+        response += "\n";
+
+        std::cout << "Sending: " << response;
+
+        send(
             client_fd,
-            buffer,
-            sizeof(buffer)-1,
+            response.c_str(),
+            response.size(),
             0
         );
 
-    if(bytes <= 0)
-        return;
-
-    buffer[bytes] = '\0';
-
-    std::string input(buffer);
-
-    Command cmd =
-        parser.parse(input);
-
-    std::string response =
-        executor.execute(cmd);
-
-    response += "\n";
-
-    send(
-        client_fd,
-        response.c_str(),
-        response.size(),
-        0
-    );
-
+        std::cout << "Sent\n";
+        
+    }
+    std::cout<<"Disonnected to client with client_fd: "<<client_fd<<'\n';
     close(client_fd);
 }
