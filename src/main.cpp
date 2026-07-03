@@ -1,8 +1,18 @@
 #include "server/RedisServer.h"
+#include <iostream>
 
 int main()
 {
-    RedisServer server(6380);
+    try
+    {
+        RedisServer server(6380);
 
-    server.start();
+        server.start();
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr
+            << e.what()
+            << '\n';
+    }
 }

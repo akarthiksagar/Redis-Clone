@@ -1,17 +1,14 @@
 add_library(
-    parser
-
-    CommandParser.cpp
+    connection
+    Connection.cpp
 )
-
 target_include_directories(
-    parser
+    connection
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
-
-target_include_directories(
-    parser
+target_link_libraries(
+    connection
     PUBLIC
-        common
+    request
 )

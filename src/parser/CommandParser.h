@@ -6,4 +6,6 @@
 class CommandParser {
 public:
     Command parse(const std::string& input);
+    Command parse(const std::vector<std::string>& tokens);
+
 };

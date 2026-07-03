@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <shared_mutex>
 #include <mutex>
+#include <optional>
 
 class DataStore {
 private:
@@ -12,7 +13,7 @@ private:
 public:
     void set(const std::string& key, const std::string& value);
 
-    std::string get(const std::string& key) const;
+    std::optional<std::string> get(const std::string& key) const;
 
     bool del(const std::string& key);
 

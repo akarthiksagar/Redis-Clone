@@ -3,6 +3,7 @@
 #include <string>
 
 #include "../common/Command.h"
+#include "../common/Response.h"
 #include "../datastore/DataStore.h"
 
 class CommandExecutor {
@@ -12,5 +13,5 @@ private:
 public:
     CommandExecutor(DataStore& ds);
 
-    std::string execute(const Command& cmd);
+    Response execute(const Command& cmd);
 };
