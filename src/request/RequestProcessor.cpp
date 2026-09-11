@@ -75,9 +75,6 @@ ProcessResult RequestProcessor::process(
     }
     else
     {
-        // TODO:
-        // Plain text protocol currently assumes
-        // one command per buffer.
         cmd =
             commandParser.parse(buffer);
 
